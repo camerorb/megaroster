@@ -1,0 +1,10 @@
+.template {
+    visibility: hidden;
+}
+.promoted{
+    color: #e05a43;
+    border: 20px border-style #000;
+}
+h2 {
+    color: #e05a43;
+}
