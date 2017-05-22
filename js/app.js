@@ -80,6 +80,12 @@ class Megaroster {
     li
       .querySelector('button.move-up')
       .addEventListener('click', this.moveUp.bind(this, student))
+     li
+      .querySelector('button.move-down')
+      .addEventListener('click', this.moveDown.bind(this, student))
+     li
+       .querySelector('button.change')
+       .addEventListener('click', this.change.bind(this, student))
   }
 
   save() {
@@ -104,6 +110,21 @@ class Megaroster {
     }
   }
 
+  moveDown(student, ev) {
+      const btn = ev.target
+      const li = btn.closest('.student')
+
+      const index = this.students.findIndex((currentStudent, i) => {
+            return currentStudent.id === student.id
+        })
+        if (index < this.students.length - 1) {
+            const nextStudent = this.students[index + 1]
+            this.students[index + 1] = student
+            this.students[index] = nextStudent
+            this.studentList.insertBefore(li.nextElementSibling, li)
+            this.save()
+        }
+    }
   promoteStudent(student, ev) {
     const btn = ev.target
     const li = btn.closest('.student')
@@ -117,6 +138,7 @@ class Megaroster {
 
     this.save()
   }
+
 
   removeStudent(ev) {
     const btn = ev.target
@@ -133,6 +155,26 @@ class Megaroster {
     li.remove()
     this.save()
   }
+  change(student, ev) {
+        const btn = ev.target
+        const li = btn.closest('.student')
+        const div = li.firstElementChild
+        if(div.isContentEditable === false)
+        {
+            div.setAttribute("contenteditable", "true")
+        }
+        else{
+            div.setAttribute("contenteditable", "false")
+            for (let i = 0; i < this.students.length; i++){
+            let currentId = this.students[i].id.toString()
+            if (currentId === li.dataset.id){
+                    this.students[i].name = div.textContent
+                    break
+                }
+           }
+           this.save()
+        }
+    }
 
   removeClassName(el, className) {
     el.className = el.className.replace(className, '').trim()
